@@ -1,5 +1,5 @@
 <h2>Follow Users</h2>
-<% if @following.any? %>
+<% if @users.exists? %>
   <table class='table'>
     <thead>
       <tr>
@@ -11,11 +11,11 @@
       </tr>
     </thead>
     <tbody>
-      <% @following.each do |user| %>
+      <% @users.each do |user| %>
         <tr>
           <td><%= image_tag user.get_profile_image, size: '50x50' %></td>
           <td><%= user.name %></td>
-          <td>フォロー数: <%= user.following.count %></td>
+          <td>フォロー数: <%= user.followings.count %></td>
           <td>フォロワー数: <%= user.followers.count %></td>
           <td><%= link_to 'Show', user %></td>
         </tr>
@@ -23,5 +23,5 @@
     </tbody>
   </table>
 <% else %>
-  <p>ユーザーはいません。</p>
+  <p>ユーザーはいません</p>
 <% end %>
