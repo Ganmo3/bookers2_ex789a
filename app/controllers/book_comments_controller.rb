@@ -5,13 +5,32 @@ def create
   comment = current_user.book_comments.new(book_comment_params)
   comment.book_id = book.id
   comment.save
-  redirect_to book_path(book.id)
+  # redirect_to book_path(book.id)
+  @book = Book.find(params[:book_id])
+  @book_comment = BookComment.new
+  @comment_count = @book.book_comments.count
+
+  
+    respond_to do |format|
+    format.html { redirect_to @book }
+    format.js
+  end
+  
 end
 
 def destroy
   book_comment = BookComment.find(params[:id])
   book_comment.destroy
-  redirect_to book_path(book_comment.book.id)
+ # redirect_to book_path(book_comment.book.id)
+  @book = Book.find(params[:book_id])
+  @book_comment = BookComment.new
+  @comment_count = @book.book_comments.count
+  
+    respond_to do |format|
+    format.html { redirect_to @book }
+    format.js
+  end
+  
 end
 
 
