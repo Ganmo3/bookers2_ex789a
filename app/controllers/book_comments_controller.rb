@@ -10,12 +10,10 @@ def create
   @book_comment = BookComment.new
   @comment_count = @book.book_comments.count
 
-  
     respond_to do |format|
     format.html { redirect_to @book }
     format.js
   end
-  
 end
 
 def destroy
