@@ -1,0 +1,30 @@
+<!-- app/views/rooms/show.html.erb -->
+
+<% unless current_user.id == @room.users.ids.first %>
+  <% if @is_room == true %>
+    <%= link_to 'メッセージへ', room_path(@room) %>
+  <% else %>
+    <%= form_with model: @room do |f| %>
+      <%= f.fields_for :entries, @entry do |e| %>
+        <%= e.hidden_field :user_id, value: current_user.id %>
+      <% end %>
+      <%= f.submit 'メッセージを送る' %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if @is_room == true %>
+    <%= link_to 'メッセージへ', room_path(@room) %>
+  <% else %>
+    <%= form_with model: @room do |f| %>
+      <%= f.fields_for :entries, Entry.new(user_id: current_user.id) do |e| %>
+        <%= e.hidden_field :user_id %>
+      <% end %>
+      <%= f.submit 'メッセージを送る' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- メッセージ一覧の表示 -->
+<% @messages.each do |message| %>
+  <p><%= message.user.name %>: <%= message.message %></p>
+<% end %>

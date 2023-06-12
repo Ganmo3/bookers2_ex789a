@@ -22,6 +22,11 @@ class User < ApplicationRecord
     # フォローする関係を通じて参照→自分がフォローしている人
   has_many :followings, through: :active_relationships, source: :followed
   
+  
+  # DM機能
+   has_many :entries, dependent: :destroy
+   has_many :direct_messages, dependent: :destroy
+
 
 
 
