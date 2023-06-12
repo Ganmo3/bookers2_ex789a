@@ -25,5 +25,9 @@ class Book < ApplicationRecord
     end
   end
   
+  # いいね数カウント
+  def update_favorites_count
+    self.update(favorites_count: self.favorites.count)
+  end
   
 end

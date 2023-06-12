@@ -10,7 +10,7 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
+    @books = Book.all.sort_by { |book| -book.favorites.count }
     @book = Book.new
   end
 
