@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   
   # DM
   resources :rooms, only: [:create,:show]
-  resources :messages, only: [:create,:destroy]
+  resources :direct_messages, only: [:create,:destroy]
   
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

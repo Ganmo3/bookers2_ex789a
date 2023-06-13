@@ -7,11 +7,17 @@ class BooksController < ApplicationController
     @user = @book.user
     @books = Book.new
     @book_comment = BookComment.new
+    
+    @book_detail = Book.find(params[:id])
+    unless ViewCount.find_by(user_id: current_user.id, book_id: @book_detail.id)
+      current_user.view_counts.create(book_id: @book_detail.id)
+    end
   end
 
   def index
     @books = Book.all.sort_by { |book| -book.favorites.count }
     @book = Book.new
+    @book_detail = nil
   end
 
   def create
@@ -51,8 +57,8 @@ class BooksController < ApplicationController
   end
 
   def is_matching_login_user
-    book = Book.find(params[:id])
-    unless book.user_id == current_user.id
+    # book = Book.find(params[:id])
+    unless @book.user_id == current_user.id
       redirect_to books_path
     end
   end

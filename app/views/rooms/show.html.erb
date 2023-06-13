@@ -1,30 +1,30 @@
-<!-- app/views/rooms/show.html.erb -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-lg-6 mx-auto">
+      <div class="">
+        <% @entries.each do |e| %>
+          <% if current_user.id != e.user.id %>
+            <h2 class="my-3"><%= e.user.name %>さんとのトークルーム</h2>
+          <% end %>
+        <% end %>
+        <%= link_to "ユーザー一覧に戻る", users_path %><br>
 
-<% unless current_user.id == @room.users.ids.first %>
-  <% if @is_room == true %>
-    <%= link_to 'メッセージへ', room_path(@room) %>
-  <% else %>
-    <%= form_with model: @room do |f| %>
-      <%= f.fields_for :entries, @entry do |e| %>
-        <%= e.hidden_field :user_id, value: current_user.id %>
-      <% end %>
-      <%= f.submit 'メッセージを送る' %>
-    <% end %>
-  <% end %>
-<% else %>
-  <% if @is_room == true %>
-    <%= link_to 'メッセージへ', room_path(@room) %>
-  <% else %>
-    <%= form_with model: @room do |f| %>
-      <%= f.fields_for :entries, Entry.new(user_id: current_user.id) do |e| %>
-        <%= e.hidden_field :user_id %>
-      <% end %>
-      <%= f.submit 'メッセージを送る' %>
-    <% end %>
-  <% end %>
-<% end %>
+        <% if @room.direct_messages.present? %>
+          <% @room.direct_messages.each do |m| %>
+            <%= m.user.name %>
+            <%= m.message %>
+            <%= link_to '削除', direct_message_path(m), method: :delete, data: { confirm: '本当に削除しますか？' } %>
+          <% end %>
+        <% else %>
+          <p>まだメッセージはありません</p>
+        <% end %>
 
-<!-- メッセージ一覧の表示 -->
-<% @messages.each do |message| %>
-  <p><%= message.user.name %>: <%= message.message %></p>
-<% end %>
+        <%= form_with model: @message do |f| %>
+          <%= f.text_area :message, placeholder: "メッセージはここに", size: 50, class: "form-control mt-5" %>
+          <%= f.hidden_field :room_id, value: @room.id %><br>
+          <%= f.submit "post", class: "btn btn-info form-control" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
